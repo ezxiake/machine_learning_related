@@ -1,0 +1,170 @@
+[ti:]
+[ar:]
+[al:]
+[by:¾Å¾ÅLrc¸è´ÊÍø¡«www.99Lrc.net]
+[00:01:00] You've seen how convolutions over 2D images works.
+[00:05:51] Now, let's see how you can implement convolutions over,
+[00:08:50] not just 2D images,
+[00:10:19] but over three dimensional volumes.
+[00:13:26] Let's start with an example,
+[00:15:61] let's say you want to detect features,
+[00:17:93] not just in a great scale image,
+[00:20:92] but in a RGB image.
+[00:22:55] So, an RGB image might be instead of a six by six image,
+[00:27:03] it could be six by six by three,
+[00:29:33] where the three here responds to the three color channels.
+[00:32:98] So, you think of this as a stack of three six by six images.
+[00:37:57] In order to detect edges or some other feature in this image,
+[00:41:92] you can vault this,
+[00:43:49] not with a three by three filter,
+[00:47:32] as we have previously,
+[00:49:12] but now with also with a 3D filter,
+[00:51:90] that's going to be three by three by three.
+[00:54:86] So the filter itself will also have three layers corresponding to the red,
+[01:01:96] green, and blue channels.
+[01:04:89] So to give these things some names,
+[01:07:18] this first six here,
+[01:08:98] that's the height of the image,
+[01:12:29] that's the width, and this three is the number of channels.
+[01:19:36] And your filter also similarly has a height,
+[01:24:07] a width, and the number of channels.
+[01:27:99] And the number of channels in
+[01:31:17] your image must match the number of channels in your filter,
+[01:35:14] so these two numbers have to be equal.
+[01:38:48] We'll see on the next slide how this convolution operation actually works,
+[01:42:36] but the output of this will be a four by four image.
+[01:46:74] And notice this is four by four by one,
+[01:49:60] there's no longer a three at the end.
+[01:53:16] Let's go through in detail how this works but let's use a more nicely drawn image.
+[02:01:31] So here's the six by six by three image,
+[02:05:36] and here's a three by three by three filter,
+[02:10:03] and this last number,
+[02:11:83] the number of channels matches the 3D image and the filter.
+[02:17:39] So to simplify the drawing of this three by three by three filter,
+[02:22:19] instead of joining it is a stack of the matrices, I'm also going to,
+[02:26:67] sometimes, just draw it as this three dimensional cube, like that.
+[02:32:32] So to compute the output of this convolutional operation,
+[02:37:77] what you would do is take the three by three by three filter and first,
+[02:42:44] place it in that upper left most position.
+[02:45:44] So, notice that this three by three by three filter has 27 numbers,
+[02:51:02] or 27 parameters, that's three cubes.
+[02:53:98] And so, what you do is take each of
+[02:56:18] these 27 numbers and multiply them with the corresponding numbers from the red,
+[03:05:69] green, and blue channels of the image,
+[03:07:42] so take the first nine numbers from red channel,
+[03:09:62] then the three beneath it to the green channel,
+[03:12:08] then the three beneath it to the blue channel,
+[03:13:97] and multiply it with the corresponding 27 numbers that gets
+[03:17:88] covered by this yellow cube show on the left.
+[03:22:31] Then add up all those numbers and this gives you this first number in the output,
+[03:28:61] and then to compute the next output you take this cube and slide it over by one,
+[03:34:70] and again, due to 27 multiplications,
+[03:37:19] add up the 27 numbers,
+[03:40:37] that gives you this next output,
+[03:42:54] do it for the next number over,
+[03:44:46] for the next position over,
+[03:45:64] that gives the third output and so on.
+[03:49:52] That dives you the forth and then one row down and then the next one,
+[03:54:08] to the next one, to the next one,
+[03:55:93] and so on, you get the idea,
+[03:58:76] until at the very end,
+[04:02:08] that's the position you'll have for that final output.
+[04:09:09] So, what does this allow you to do?
+[04:10:74] Well, here's an example,
+[04:12:77] this filter is three by three by three.
+[04:15:17] So, if you want to detect edges in the red channel of the image,
+[04:20:45] then you could have the first filter, the one, one, one, one is one,
+[04:24:99] one is one, one is one as usual,
+[04:27:84] and have the green channel be all zeros,
+[04:31:38] and have the blue filter be all zeros.
+[04:35:12] And if you have these three stock together to form your three by three by three filter,
+[04:42:41] then this would be a filter that detect edges,
+[04:46:04] vertical edges but only in the red channel.
+[04:49:72] Alternatively, if you don't care what color the vertical edge is in,
+[04:54:95] then you might have a filter that's like this,
+[04:58:87] whereas this one, one, one, minus one,
+[05:01:52] minus one, minus one,
+[05:02:80] in all three channels.
+[05:04:71] So, by setting this second alternative, set the parameters,
+[05:08:79] you then have a edge detector,
+[05:10:98] a three by three by three edge detector,
+[05:12:71] that detects edges in any color.
+[05:15:93] And with different choices of these parameters you can get
+[05:19:46] different feature detectors out of this three by three by three filter.
+[05:24:28] And by convention, in computer vision,
+[05:26:32] when you have an input with a certain height, a certain width,
+[05:31:79] and a certain number of channels, then
+[05:33:44] your filter will have a potential different height,
+[05:36:20] different width, but the same number of channels.
+[05:39:54] And in theory it's possible to have a filter that maybe only looks at the red channel
+[05:44:78] or maybe a filter looks at only the green channel and a blue channel.
+[05:50:77] And once again, you notice th\t convolving a volume,
+[05:54:56] a six by six by three convolve with a three by three by three,
+[06:00:79] that gives a four by four, a 2D output.
+[06:07:43] Now that you know how to convolve on volumes,
+[06:10:62] there is one last idea that will be crucial for building convolutional neural networks,
+[06:17:12] which is what if we don't just wanted to detect vertical edges?
+[06:20:55] What if we wanted to detect vertical edges and horizontal edges
+[06:23:55] and maybe 45 degree edges and maybe 70 degree edges as well,
+[06:27:08] but in other words, what if you want to use multiple filters at the same time?
+[06:32:18] So, here's the picture we had from the previous slide,
+[06:35:64] we had six by six by three convolved with the three by three by three,
+[06:38:38] gets four by four,
+[06:39:71] and maybe this is a vertical edge detector,
+[06:42:42] or maybe it's run to detect some other feature.
+[06:46:02] Now, maybe a second filter may be denoted by this orange-ish color,
+[06:52:95] which could be a horizontal edge detector.
+[07:00:56] So, maybe convolving it with the first filter gives you this first four by four output
+[07:05:65] and convolving with the second filter gives you a different four by four output.
+[07:13:56] And what we can do is then take these two four by four outputs,
+[07:16:80] take this first one within the front and you
+[07:20:77] can take this second filter output and well, let me draw it here,
+[07:25:06] put it at back as follows,
+[07:27:87] so that by stacking these two together,
+[07:29:46] you end up with a four by four by two output volume, right?
+[07:35:97] And you can think of the volume as if we draw this is a box,
+[07:39:90] I guess it would look like this.
+[07:41:71] So this would be a four by four by two output volume,
+[07:45:62] which is the result of taking your six by six by three image and
+[07:49:74] convolving it or applying two different three by three filters to it,
+[07:54:88] resulting in two four by four outputs that then gets stacked up
+[07:57:87] to form a four by four by two volume.
+[08:02:09] And the two here comes from the fact that we used two different filters.
+[08:07:83] So, let's just summarize the dimensions,
+[08:14:32] if you have a n by n by number of channels input image,
+[08:19:57] so an example, there's a six by six by three,
+[08:22:97] where n subscript C is the number of channels,
+[08:26:96] and you convolve that with a f by f by, and again,
+[08:31:67] this should be the same nC, so this was,
+[08:34:64] three by three by three,
+[08:38:36] and by convention this and this have to be the same number.
+[08:45:18] Then, what you get is n minus f plus one by
+[08:52:15] n minus f plus one by and you want to use this nC prime,
+[08:59:97] or its really nC of the next layer,
+[09:02:31] but this is the number of filters that you use.
+[09:06:85] So this in our example would be be four by four by two.
+[09:11:89] And I wrote this assuming that you use a stride of one and no padding.
+[09:16:33] But if you used a different stride of padding
+[09:19:27] than this n minus F plus one would be affected in a usual way,
+[09:22:85] as we see in the previous videos.
+[09:26:24] So this idea of convolution on volumes,
+[09:29:28] turns out to be really powerful.
+[09:31:51] Only a small part of it is that you can now operate
+[09:34:35] directly on RGB images with three channels.
+[09:38:08] But even more important is that
+[09:40:48] you can now detect two features, like vertical, horizontal edges,
+[09:43:42] or 10, or maybe a 128,
+[09:46:53] or maybe several hundreds of different features.
+[09:49:36] And the output will then have a number
+[09:51:39] of channels equal to the number of filters you are detecting.
+[09:58:40] And as a note of notation,
+[10:00:99] I've been using your number of channels to denote this last dimension in the literature,
+[10:07:12] people will also often call this the depth of this 3D volume and both notations,
+[10:14:62] channels or depth, are commonly used in the literature.
+[10:17:25] But they find depth more confusing
+[10:19:37] because you usually talk about the depth of the neural network as well,
+[10:22:85] so I'm going to use the term channels in these videos to refer to
+[10:26:88] the size of this third dimension of these filters.
+[10:31:96] So now that you know how to implement convolutions over volumes,
+[10:36:54] you now are ready to implement one layer of the convolutional neural network.
+[10:41:59] Let's see how to do that in the next video.

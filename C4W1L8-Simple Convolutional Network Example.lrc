@@ -1,0 +1,119 @@
+[ti:]
+[ar:]
+[al:]
+[by:¾Å¾ÅLrc¸è´ÊÍø¡«www.99Lrc.net]
+[00:00:25] In the last video, you saw the building blocks of a single layer,
+[00:04:02] of a single convolution layer in the ConvNet.
+[00:06:72] Now let's go through a concrete example of a deep convolutional neural network.
+[00:12:33] And this will give you some practice with the notation that we introduced toward
+[00:15:87] the end of the last video as well.
+[00:19:64] Let's say you have an image, and
+[00:22:20] you want to do image classification, or image recognition.
+[00:26:95] Where you want to take as input an image, x, and decide is this a cat or not, 0 or
+[00:31:74] 1, so it's a classification problem.
+[00:34:25] Let's build an example of a ConvNet you could use for this task.
+[00:38:62] For the sake of this example, I'm going to use a fairly small image.
+[00:42:94] Let's say this image is 39 x 39 x 3.
+[00:48:49] This choice just makes some of the numbers work out a bit better.
+[00:51:52] And so, nH in layer 0 will be equal to nw height and
+[00:57:47] width are equal to 39 and
+[01:00:58] the number of channels and layer 0 is equal to 3.
+[01:06:53] Let's say the first layer uses a set of 3 by 3 filters
+[01:11:90] to detect features, so f = 3 or really f1 = 3,
+[01:16:92] because we're using a 3 by 3 process.
+[01:20:99] And let's say we're using a stride of 1, and no padding.
+[01:26:87] So using a same convolution, and let's say you have 10 filters.
+[01:34:63] Then the activations in this next layer of
+[01:38:77] the neutral network will be 37 x 37 x 10,
+[01:43:75] this 10 comes from the fact that you use 10 filters.
+[01:49:33] And 37 comes from this formula
+[01:54:73] n + 2p- f over s + 1.
+[01:58:73] Right, then I guess you have 39
+[02:03:91] + 0- 3 over 1 + 1 that's = to 37.
+[02:10:40] So that's why the output is 37 by 37, it's a valid convolution and
+[02:15:00] that's the output size.
+[02:17:59] So in our notation you would have nh[1] = nw[1] = 37 and
+[02:25:02] nc[1] = 10, so nc[1] is also equal
+[02:30:12] to the number of filters from the first layer.
+[02:36:24] And so this becomes the dimension of the activation at the first layer.
+[02:43:30] Let's say you now have another convolutional layer and
+[02:45:98] let's say this time you use 5 by 5 filters.
+[02:48:90] So, in our notation f[2] at the next neural network = 5,
+[02:54:99] and let's say use a stride of 2 this time.
+[02:59:23] And maybe you have no padding and
+[03:03:92] say, 20 filters.
+[03:09:37] So then the output of this will be another volume,
+[03:15:93] this time it will be 17 x 17 x 20.
+[03:20:94] Notice that, because you're now using a stride of 2,
+[03:23:86] the dimension has shrunk much faster.
+[03:25:92] 37 x 37 has gone down in size by slightly more than a factor of 2, to 17 x 17.
+[03:32:80] And because you're using 20 filters, the number of channels now is 20.
+[03:37:55] So it's this activation a2
+[03:42:16] would be that dimension and so
+[03:46:97] nh[2] = nw[2] = 17 and
+[03:52:16] nc[2] = 20.
+[03:55:24] All right, let's apply one last convolutional layer.
+[03:58:18] So let's say that you use a 5 by 5 filter again,
+[04:04:07] and again, a stride of 2.
+[04:07:39] So if you do that, I'll skip the math, but you end up with a 7 x 7, and
+[04:13:68] let's say you use 40 filters, no padding, 40 filters.
+[04:19:25] You end up with 7 x 7 x 40.
+[04:22:76] So now what you've done is taken your 39 x 39 x 3 input
+[04:29:38] image and computed your 7 x 7 x 40 features for this image.
+[04:34:81] And then finally, what's commonly done is if you take this 7 x 7 x 40,
+[04:41:07] 7 times 7 times 40 is actually 1,960.
+[04:45:13] And so what we can do is take this volume and flatten it or
+[04:50:88] unroll it into just 1,960 units, right?
+[04:55:90] Just flatten it out into a vector, and
+[04:59:34] then feed this to a logistic regression unit, or a softmax unit.
+[05:07:91] Depending on whether you're trying to recognize or
+[05:11:68] trying to recognize any one of key different objects and
+[05:15:15] then just have this give the final predicted output for the neural network.
+[05:20:92] So just be clear, this last step is just taking all of these numbers,
+[05:26:52] all 1,960 numbers, and unrolling them into a very long vector.
+[05:32:22] So then you just have one long vector that you can feed into softmax until it's just
+[05:36:48] a regression in order to make prediction for the final output.
+[05:41:60] So this would be a pretty typical example of a ConvNet.
+[05:47:38] A lot of the work in designing convolutional neural net is selecting
+[05:51:18] hyperparameters like these, deciding what's the total size?
+[05:54:88] What's the stride?
+[05:55:84] What's the padding and how many filters are used?
+[06:00:19] And both later this week as well as next week, we'll give some suggestions and
+[06:03:98] some guidelines on how to make these choices.
+[06:07:44] But for now, maybe one thing to take away from this is that as you go
+[06:12:51] deeper in a neural network, typically you start off with larger images, 39 by 39.
+[06:17:95] And then the height and width will stay the same for
+[06:21:20] a while and gradually trend down as you go deeper in the neural network.
+[06:25:85] It's gone from 39 to 37 to 17 to 14.
+[06:29:66] Excuse me, it's gone from 39 to 37 to 17 to 7.
+[06:33:96] Whereas the number of channels will generally increase.
+[06:36:75] It's gone from 3 to 10 to 20 to 40, and you see this general
+[06:41:41] trend in a lot of other convolutional neural networks as well.
+[06:47:06] So we'll get more guidelines about how to design these parameters in later videos.
+[06:52:57] But you've now seen your first example of a convolutional neural network, or
+[06:57:19] a ConvNet for short.
+[06:59:21] So congratulations on that.
+[07:02:05] And it turns out that in a typical ConvNet,
+[07:05:50] there are usually three types of layers.
+[07:07:87] One is the convolutional layer, and often we'll denote that as a Conv layer.
+[07:13:61] And that's what we've been using in the previous network.
+[07:17:02] It turns out that there are two other common types of layers that you haven't
+[07:20:89] seen yet but we'll talk about in the next couple of videos.
+[07:23:94] One is called a pooling layer, often I'll call this pool.
+[07:28:27] And then the last is a fully connected layer called FC.
+[07:32:24] And although it's possible to design a pretty good neural network using just
+[07:36:46] convolutional layers, most neural network architectures will also have a few pooling
+[07:41:27] layers and a few fully connected layers.
+[07:46:39] Fortunately pooling layers and
+[07:48:10] fully connected layers are a bit simpler than convolutional layers to define.
+[07:54:15] So we'll do that quickly in the next two videos and then you have a sense
+[07:58:47] of all of the most common types of layers in a convolutional neural network.
+[08:03:17] And you will put together even more powerful networks than the one we
+[08:06:72] just saw.
+[08:08:99] So congrats again on seeing your first full convolutional neural network.
+[08:14:11] We'll also talk later in this week about how to train these networks, but
+[08:18:45] first let's talk briefly about pooling and fully connected layers.
+[08:22:18] And then training these, we'll be using back propagation,
+[08:24:65] which you're already familiar with.
+[08:26:24] But in the next video, let's quickly go over how to implement a pooling layer for
+[08:30:42] your ConvNet.

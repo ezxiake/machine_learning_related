@@ -1,0 +1,178 @@
+[ti:]
+[ar:]
+[al:]
+[by:¾Å¾ÅLrc¸è´ÊÍø¡«www.99Lrc.net]
+[00:00:00] Other than convolutional layers,
+[00:02:33] ConvNets often also use pooling layers to reduce the size of the representation,
+[00:07:13] to speed the computation,
+[00:08:51] as well as make some of the features that detects a bit more robust.
+[00:12:02] Let's take a look. Let's go through an example of pooling,
+[00:16:39] and then we'll talk about why you might want to do this.
+[00:20:20] Suppose you have a four by four input,
+[00:24:30] and you want to apply a type of pooling called max pooling.
+[00:28:67] And the output of
+[00:30:32] this particular implementation of max pooling will be a two by two output.
+[00:34:37] And the way you do that is quite simple.
+[00:37:27] Take your four by four input and break it into
+[00:40:31] different regions and I'm going to color the four regions as follows.
+[00:44:28] And then, in the output,
+[00:46:13] which is two by two,
+[00:47:48] each of the outputs will just be the max from the corresponding reshaded region.
+[00:53:24] So the upper left, I guess,
+[00:54:68] the max of these four numbers is nine.
+[00:57:90] On upper right, the max of the blue numbers is two.
+[01:01:76] Lower left, the biggest number is six,
+[01:04:27] and lower right, the biggest number is three.
+[01:08:05] So to compute each of the numbers on the right,
+[01:10:73] we took the max over a two by two regions.
+[01:13:40] So, this is as if you apply a filter size of two
+[01:18:74] because you're taking a two by two regions and you're taking a stride of two.
+[01:25:29] So, these are actually the hyperparameters of
+[01:30:82] max pooling because we start from this filter size.
+[01:36:54] It's like a two by two region that gives you the nine.
+[01:39:65] And then, you step all over two steps to look at this region, to give you the two,
+[01:45:58] and then for the next row,
+[01:46:88] you step it down two steps to give you the six,
+[01:49:58] and then step to the right by two steps to give you three.
+[01:52:57] So because the squares are two by two, f is equal to two,
+[01:54:62] and because you stride by two,
+[01:58:07] s is equal to two.
+[02:00:21] So here's the intuition behind what max pooling is doing.
+[02:09:52] If you think of this four by four region as some set of features,
+[02:15:05] the activations in some layer of the neural network,
+[02:19:20] then a large number,
+[02:20:49] it means that it's maybe detected a particular feature.
+[02:23:67] So, the upper left-hand quadrant has this particular feature.
+[02:26:49] It maybe a vertical edge or maybe a higher or whisker if you trying to detect a [inaudible].
+[02:32:47] Clearly, that feature exists in the upper left-hand quadrant.
+[02:34:82] Whereas this feature, maybe it isn't cat eye detector.
+[02:40:05] Whereas this feature, it doesn't really exist in the upper right-hand quadrant.
+[02:43:97] So what the max operation does is a lots of features detected anywhere,
+[02:47:76] and one of these quadrants , it then remains preserved in the output of max pooling.
+[02:53:50] So, what the max operates to does is really to say,
+[02:56:26] if these features detected anywhere in this filter,
+[02:59:78] then keep a high number.
+[03:01:34] But if this feature is not detected,
+[03:03:51] so maybe this feature doesn't exist in the upper right-hand quadrant.
+[03:07:69] Then the max of all those numbers is still itself quite small.
+[03:11:09] So maybe that's the intuition behind max pooling.
+[03:15:25] But I have to admit,
+[03:16:53] I think the main reason people use max pooling is
+[03:19:55] because it's been found in a lot of experiments to work well,
+[03:23:62] and the intuition I just described,
+[03:25:64] despite it being often cited,
+[03:27:37] I don't know of anyone fully knows if that is the real underlying reason.
+[03:33:02] I don't have anyone knows if that's
+[03:34:65] the real underlying reason that max pooling works well in ConvNets.
+[03:39:93] One interesting property of max pooling is that it has
+[03:43:49] a set of hyperparameters but it has no parameters to learn.
+[03:47:77] There's actually nothing for gradient descent to learn.
+[03:50:29] Once you fix f and s,
+[03:51:78] it's just a fixed computation and gradient descent doesn't change anything.
+[03:56:87] Let's go through an example with some different hyperparameters.
+[04:00:81] Here, I am going to use, sure you have a five by five input
+[04:04:67] and we're going to apply max pooling with a filter size that's three by three.
+[04:10:29] So f is equal to three and let's use a stride of one.
+[04:13:81] So in this case, the output size is going to be three by three.
+[04:18:19] And the formulas we had developed in
+[04:20:57] the previous videos for figuring out the output size for conv layer,
+[04:23:94] those formulas also work for max pooling.
+[04:27:34] So, that's n plus 2p minus f over s plus 1.
+[04:34:34] That formula also works for figuring out the output size of max pooling.
+[04:38:45] But in this example, let's compute each of the elements of this three by three output.
+[04:41:82] The upper left-hand elements,
+[04:45:08] we're going to look over that region.
+[04:46:67] So notice this is a three by three region
+[04:48:73] because the filter size is three and to the max there.
+[04:51:69] So, that will be nine,
+[04:53:71] and then we shifted over by one because which you can stride at one.
+[04:57:92] So, that max in the blue box is nine.
+[05:00:96] Let's shift that over again.
+[05:03:69] The max of the blue box is five.
+[05:06:23] And then let's go on to the next row, a stride of one.
+[05:09:71] So we're just stepping down by one step.
+[05:12:46] So max in that region is nine, max in that region is nine,
+[05:16:52] max in that region,
+[05:19:97] it's now with a two fives, we have maxes of five.
+[05:22:51] And then finally, max in that is eight.
+[05:26:13] Max in that is six,
+[05:28:96] and max in that, this is not [inaudible].
+[05:31:35] Okay, so this, with this set of hyperparameters f equals three,
+[05:35:81] s equals one gives that output shown [inaudible].
+[05:40:00] Now, so far, I've shown max pooling on a 2D inputs.
+[05:44:97] If you have a 3D input,
+[05:47:37] then the outputs will have the same dimension.
+[05:53:24] So for example, if you have five by five by two,
+[05:56:76] then the output will be three by three by two and the way you compute
+[06:02:36] max pooling is you perform the computation
+[06:05:04] we just described on each of the channels independently.
+[06:08:36] So the first channel which is shown here on top is still the same,
+[06:11:96] and then for the second channel, I guess,
+[06:13:79] this one that I just drew at the bottom,
+[06:15:79] you would do the same computation on that slice of
+[06:19:25] this value and that gives you the second slice.
+[06:24:36] And more generally, if this was five by five by some number of channels,
+[06:29:30] the output would be three by three by that same number of channels.
+[06:34:39] And the max pooling computation is done independently on each of these N_C channels.
+[06:44:54] So, that's max pooling.
+[06:46:52] This one is the type of pooling that isn't used very often,
+[06:49:81] but I'll mention briefly which is average pooling.
+[06:52:87] So it does pretty much what you'd expect which is,
+[06:56:39] instead of taking the maxes within each filter,
+[06:59:08] you take the average.
+[07:02:04] So in this example,
+[07:03:25] the average of the numbers in purple is 3.75,
+[07:07:54] then there is 1.25,
+[07:09:94] and four and two.
+[07:12:93] And so, this is average pooling with hyperparameters f equals two,
+[07:17:02] s equals two, we can choose other hyperparameters as well.
+[07:21:79] So these days, max pooling is used much more
+[07:24:64] often than average pooling with one exception,
+[07:28:34] which is sometimes very deep in a neural network.
+[07:32:12] You might use average pooling to collapse your representation from say,
+[07:36:67] 7 by 7 by 1,000.
+[07:40:29] An average over all the [inaudible] ,
+[07:42:75] you get 1 by 1 by 1,000.
+[07:45:62] We'll see an example of this later.
+[07:47:47] But you see, max pooling used much more in the neural network than average pooling.
+[07:54:08] So just to summarize,
+[07:56:30] the hyperparameters for pooling are f,
+[08:00:10] the filter size and s, the stride,
+[08:02:84] and maybe common choices of parameters might be f equals two, s equals two.
+[08:07:36] This is used quite often and this has the effect
+[08:11:04] of roughly shrinking the height and width by a factor of above two,
+[08:15:92] and a common chosen hyperparameters might be f equals two, s equals two,
+[08:21:15] and this has the effect of shrinking
+[08:23:53] the height and width of the representation by a factor of two.
+[08:28:44] I've also seen f equals three, s equals two used,
+[08:32:09] and then the other hyperparameter is just like a binary bit that says,
+[08:37:15] are you using max pooling or are you using average pooling.
+[08:40:12] If you want, you can add an extra hyperparameter
+[08:43:38] for the padding although this is very, very rarely used.
+[08:48:14] When you do max pooling, usually,
+[08:50:08] you do not use any padding,
+[08:51:68] although there is one exception that we'll see next week as well.
+[08:55:02] But for the most parts of max pooling,
+[08:57:16] usually, it does not use any padding.
+[08:59:71] So, the most common value of p by far is p equals zero.
+[09:05:34] And the input of max pooling is that you input a volume of size that,
+[09:13:21] N_H by N_W by N_C,
+[09:14:94] and it would output a volume of size given by this.
+[09:21:26] So assuming there's no padding by N_W minus f over s,
+[09:29:46] this one for by N_C.
+[09:32:01] So the number of input channels is equal to the number of output channels
+[09:35:29] because pooling applies to each of your channels independently.
+[09:40:55] One thing to note about pooling is that there are no parameters to learn.
+[09:47:20] So, when we implement that crop,
+[09:50:47] you find that there are no parameters that backdrop will adapt through max pooling.
+[09:55:64] Instead, there are just these hyperparameters that you set once,
+[09:58:40] maybe set ones by hand or set using cross-validation.
+[10:01:48] And then beyond that, you are done.
+[10:03:71] Its just a fixed function that the neural network computes in one of the layers,
+[10:07:14] and there is actually nothing to learn.
+[10:09:82] It's just a fixed function.
+[10:11:99] So, that's it for pooling.
+[10:13:35] You now know how to build convolutional layers and pooling layers.
+[10:15:46] In the next video,
+[10:18:09] let's see a more complex example of a ConvNet.
+[10:20:83] One that will also allow us to introduce fully connected layers.

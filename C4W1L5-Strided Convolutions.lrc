@@ -1,0 +1,128 @@
+[ti:]
+[ar:]
+[al:]
+[by:¾Å¾ÅLrc¸è´ÊÍø¡«www.99Lrc.net]
+[00:00:63] Strided convolutions is another piece of
+[00:04:09] the basic building block of convolutions as used in Convolutional Neural Networks.
+[00:09:55] Let me show you an example.
+[00:11:15] Let's say you want to convolve this seven by seven image with this three by three filter,
+[00:16:70] except that instead of doing the usual way,
+[00:19:29] we are going to do it with a stride of two.
+[00:23:79] What that means is you take the element Y's product as usual in this upper
+[00:29:26] left three by three region and then multiply and add and that gives you 91.
+[00:35:72] But then instead of stepping the blue box over by one step,
+[00:39:01] we are going to step over by two steps.
+[00:41:54] So, we are going to make it hop over two steps like so.
+[00:45:99] Notice how the upper left hand corner has gone from this start to this start,
+[00:51:13] jumping over one position.
+[00:52:82] And then you do the usual element Y's product and summing it turns out 100.
+[00:59:29] And now we are going to do they do that again,
+[01:00:58] and make the blue box jump over by two steps.
+[01:04:39] You end up there, and that gives you 83.
+[01:08:10] Now, when you go to the next row,
+[01:11:12] you again actually take two steps instead of
+[01:13:81] one step so going to move the blue box over there.
+[01:17:87] Notice how we are stepping over one of the positions and then this gives you 69,
+[01:24:95] and now you again step over two steps,
+[01:27:74] this gives you 91 and so on so 127.
+[01:31:77] And then for the final row 44, 72, and 74.
+[01:38:25] In this example, we convolve with a seven by seven matrix
+[01:43:61] to this three by three matrix and we get a three by three outputs.
+[01:49:53] The input and output dimensions turns out to be governed by the following formula,
+[01:54:20] if you have an N by N image,
+[01:56:08] they convolve with an F by F filter.
+[02:00:20] And if you use padding P and stride S. In this example,
+[02:09:83] S is equal to two then you end up with an output that is N plus two P minus F,
+[02:17:63] and now because you're stepping S steps of the time,
+[02:20:75] you step just one step of the time,
+[02:22:45] you now divide by S plus one and then can apply the same thing.
+[02:29:42] In our example, we have seven plus zero, minus three,
+[02:37:16] divided by two S stride plus one equals let's see,
+[02:44:92] that's four over two plus one equals three,
+[02:49:70] which is why we wound up with this is three by three output.
+[02:54:06] Now, just one last detail which is what of this fraction is not an integer?
+[03:02:11] In that case, we're going to round this
+[03:04:40] down so this notation denotes the flow of something.
+[03:10:77] This is also called the flow of Z.
+[03:14:39] It means taking Z and rounding down to the nearest integer.
+[03:18:07] The way this is implemented is that you take
+[03:21:64] this type of blue box multiplication only if the blue box is fully contained
+[03:26:23] within the image or the image plus to the padding and if
+[03:29:74] any of this blue box kind of part of it hangs
+[03:32:59] outside and you just do not do that computation.
+[03:35:93] Then it turns out that if that's the convention that your three by three filter,
+[03:41:08] must lie entirely within your image or the image
+[03:44:95] plus the padding region before there's as
+[03:47:11] a corresponding output generated that's convention.
+[03:50:02] Then the right thing to do to compute the output dimension is
+[03:55:67] to round down in case this N plus two P minus F over S is not an integer.
+[04:01:99] Just to summarize the dimensions,
+[04:04:20] if you have an N by N matrix or N by N image that you convolve
+[04:07:78] with an F by F matrix or F by F filter with padding P N stride S,
+[04:12:62] then the output size will have this dimension.
+[04:16:99] It is nice we can choose all of these numbers so that there is an integer
+[04:21:00] although sometimes you don't have to do that and rounding down is just fine as well.
+[04:27:66] But please feel free to work through a few examples of values of N, F,
+[04:32:90] P and S on yourself to convince yourself if you want,
+[04:35:85] that this formula is correct for the output size.
+[04:41:33] Now, before moving on there is a technical comment I want to make about
+[04:45:88] cross-correlation versus convolutions and just for
+[04:49:48] the facts what you have to do to implement convolutional neural networks.
+[04:53:73] If you reading different math textbook or signal processing textbook,
+[04:59:79] there is one other possible inconsistency in the notation which is that,
+[05:05:69] if you look at the typical math textbook,
+[05:07:85] the way that the convolution is defined before doing the element Y's product and summing,
+[05:12:65] there's actually one other step that you'll first take which
+[05:16:37] is to convolve this six by six matrix with this three by three filter.
+[05:20:55] You at first take the three by three filter and slip it on
+[05:24:98] the horizontal as well as the vertical axis so this 345102 minus 197,
+[05:30:28] will become, three goes here, four goes there,
+[05:38:58] five goes there and then the second row
+[05:43:07] becomes this,102 minus 197.
+[05:49:66] Well, this is really taking the three by three filter and narrowing
+[05:53:12] it both on the vertical and horizontal axes.
+[05:58:21] And then it was this flit matrix that you would then copy over here.
+[06:04:22] To compute the output,
+[06:06:17] you will take two times seven,
+[06:08:65] plus three times two,
+[06:10:04] plus seven times five and so on.
+[06:15:27] I should multiply out the elements of this flit matrix in order to
+[06:19:91] compute the upper left hand rows elements of the four by four output as follows.
+[06:25:41] Then you take those nine numbers
+[06:31:42] and shift them over by one shift them over by one and so on.
+[06:35:91] The way we've define the convolution operation in
+[06:38:99] this video is that we've skipped this narrowing operation.
+[06:43:49] Technically, what we're actually doing,
+[06:45:93] the operation we've been using for the last few videos
+[06:49:36] is sometimes cross-correlation instead of convolution.
+[06:54:18] But in the deep learning literature by convention,
+[06:57:64] we just call this a convolutional operation.
+[07:01:76] Just to summarize, by convention in machine learning,
+[07:06:21] we usually do not bother with this skipping operation and technically,
+[07:10:73] this operation is maybe better called cross-correlation but most of
+[07:15:20] the deep learning literature just calls it the convolution operator.
+[07:20:16] And so I'm going to use that convention in these videos as well,
+[07:23:43] and if you read a lot of the machines learning literature,
+[07:28:15] you'll find most people just call this
+[07:30:32] the convolution operator without bothering to use these slips.
+[07:35:49] It turns out that in signal processing or in certain branches of mathematics,
+[07:40:12] doing the flipping in the definition of
+[07:43:61] convolution causes convolution operator to enjoy this property that A convolve with B,
+[07:49:87] convolve with C is equal to A convolve with B,
+[07:53:32] convolve with C, and this is called associativity in mathematics.
+[07:58:50] This is nice for some signal processing applications but
+[08:02:08] for deep neural networks it really doesn't matter and so omitting
+[08:05:86] this double mirroring operation just simplifies
+[08:08:68] the code and makes the neural networks work just as well.
+[08:14:45] And by convention, most of us just call this convolution
+[08:18:38] or even though the mathematicians prefer to call this cross-correlation sometimes.
+[08:24:24] But this should not affect anything you have to implement in
+[08:28:35] the problem exercises and should not
+[08:31:86] affect your ability to read and understand the deep learning literature.
+[08:38:22] You've now seen how to carry out convolutions and you've
+[08:41:60] seen how to use padding as well as strides to convolutions.
+[08:45:71] But so far, all we've been using is convolutions over matrices,
+[08:49:79] like over a six by six matrix.
+[08:51:54] In the next video, you'll see how to carry out convolutions over volumes
+[08:55:67] and this would make what you can do a convolutions sounds really much more powerful.
+[08:59:73] Let's go on to the next video.

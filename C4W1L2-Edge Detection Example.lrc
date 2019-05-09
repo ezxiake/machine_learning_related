@@ -1,0 +1,173 @@
+[ti:]
+[ar:]
+[al:]
+[by:¾Å¾ÅLrc¸è´ÊÍø¡«www.99Lrc.net]
+[00:00:53] The convolution operation is one of
+[00:03:37] the fundamental building blocks of a convolutional neural network.
+[00:05:74] Using edge detection as the motivating example in this video,
+[00:10:75] you will see how the convolution operation works.
+[00:16:75] In previous videos, I have talked about
+[00:19:53] how the early layers of the neural network might detect edges and then
+[00:24:00] the some later layers might detect cause of objects and then
+[00:27:52] even later layers may detect cause of complete objects like people's faces in this case.
+[00:35:00] In this video, you see how you can detect edges in an image.
+[00:40:46] Lets take an example.
+[00:42:06] Given a picture like that for a computer
+[00:44:73] to figure out what are the objects in this picture,
+[00:47:25] the first thing you might do is maybe detect vertical edges in this image.
+[00:54:55] For example, this image has all those vertical lines,
+[00:58:05] where the buildings are,
+[00:59:49] as well as kind of vertical lines idea all lines of these pedestrians and
+[01:03:41] so those get detected in this vertical edge detector output.
+[01:07:77] And you might also want to detect horizontal edges so for example,
+[01:13:66] there is a very strong horizontal line where
+[01:15:81] this railing is and that also gets detected sort of roughly here.
+[01:18:49] How do you detect edges in image like this?
+[01:24:78] Let us look with an example.
+[01:26:96] Here is a 6 by 6 grayscale image and because this is a grayscale image,
+[01:32:89] this is just a 6 by 6 by 1 matrix rather
+[01:36:62] than 6 by 6 by 3 because they are on a separate rgb channels.
+[01:41:22] In order to detect edges or lets say vertical edges in his image,
+[01:45:20] what you can do is construct a 3 by 3 matrix
+[01:49:02] and in the pollens when the terminology of convolutional neural networks,
+[01:53:93] this is going to be called a filter.
+[01:56:42] And I am going to construct a 3 by 3 filter or 3 by 3 matrix that looks like this 1,
+[02:03:17] 1, 1, 0, 0, 0, -1, -1, -1.
+[02:08:68] Sometimes research papers will call this a kernel instead of
+[02:12:17] a filter but I am going to use the filter terminology in these videos.
+[02:17:02] And what you are going to do is take the 6 by 6 image and convolve it and
+[02:22:76] the convolution operation is denoted by this asterisk and
+[02:26:14] convolve it with the 3 by 3 filter.
+[02:31:85] One slightly unfortunate thing about the notation is that in mathematics,
+[02:37:22] the asterisk is the standard symbol for convolution but in Python,
+[02:42:53] this is also used to denote multiplication or maybe element wise multiplication.
+[02:48:35] This asterisk has dual purposes is overloaded notation
+[02:52:84] but I will try to be clear in these videos when this asterisk refers to convolution.
+[02:58:34] The output of this convolution operator will be a 4 by 4 matrix,
+[03:04:51] which you can interpret, which you can think of as a 4 by 4 image.
+[03:08:87] The way you compute this 4 by 4 output is as follows,
+[03:13:17] to compute the first elements,
+[03:15:44] the upper left element of this 4 by 4 matrix,
+[03:18:50] what you are going to do is take the 3 by 3 filter and paste it on
+[03:21:89] top of the 3 by 3 region of your original input image.
+[03:26:05] I have written here 1, 1, 1,
+[03:29:72] 0, 0, 0, -1, -1, -1.
+[03:34:99] And what you should do is take the element wise product so the first one would be
+[03:39:15] three times 1 and then the second one would be one times one I'm going down here,
+[03:45:23] one times one and then plus two times one,
+[03:49:76] just one and then add up all of the resulting nine numbers.
+[03:53:27] So then the middle column gives you zero times zero,
+[03:57:02] plus five times zero,
+[03:58:77] plus seven times zero and then the right most column gives one times -1,
+[04:02:30] eight times -1, plus two times -1.
+[04:08:55] Adding up these nine numbers will give you negative
+[04:13:77] 5 and so I'm going to fill in negative 5 over here.
+[04:19:11] You can add up these nine numbers in any order of course.
+[04:22:44] It is just that I went down the first column,
+[04:27:50] then second column, then the third.
+[04:29:29] Next, to figure out what is this second element,
+[04:31:85] you are going to take the blue square and shift it one step to the right like so.
+[04:37:71] Let me get rid of the green marks here.
+[04:41:82] You are going to do the same element wise product and then addition.
+[04:46:25] You have zero times one,
+[04:49:20] plus five times one,
+[04:51:13] plus seven times one,
+[04:52:84] plus one time zero, plus eight times zero,
+[04:55:57] plus two times zero,
+[04:57:09] plus two times negative 1, plus nine times negative one,
+[04:59:31] plus five times negative one and if you add up those nine numbers,
+[05:06:79] you end up with negative four and so on.
+[05:10:84] If you shift this to the right, do the nine products and add them up,
+[05:14:60] you get zero and then over here you should get 8.
+[05:19:12] Just to verify, you have 2 plus 9 plus 5 that's 16.
+[05:26:07] Then the middle column gives you zero and
+[05:29:20] then the right most column 4 plus 1 plus three times negative 1,
+[05:33:61] that's -8 so that is 16 on the left column -8
+[05:37:99] and that gives you 8 like we have over here.
+[05:43:16] Next, in order to get you this element in the next row
+[05:48:49] what you do is take the blue square and now shift it
+[05:50:80] one down so you now have it in that position,
+[05:53:92] and again repeat the element wise products and then adding exercise.
+[05:59:71] If you do that,
+[06:01:18] you should get negative 10 here.
+[06:02:64] If you shift it one to the right,
+[06:06:80] you should get negative 2 and then 2 and then 3 and so on.
+[06:16:74] Then fill in all the rest of the elements of the matrix.
+[06:20:99] To be clearer, this -16 would be obtained by from this lower right 3 by 3 region.
+[06:29:45] A 6 by 6 matrix convolve of the 3 by 3 matrix gives you a 4 by 4 matrix.
+[06:37:28] And these are images and filters.
+[06:39:73] These are really just matrices of various dimensions.
+[06:43:99] But the matrix on the left is convenient to interpret as image,
+[06:48:63] and the one in the middle we interpret as a filter and the one on the right,
+[06:53:17] you can interpret that as maybe another image.
+[06:56:60] And this turns out to be a vertical edge detector,
+[07:00:31] and you see why on the next slide.
+[07:03:28] Before going on though,
+[07:04:45] just one other comment,
+[07:06:01] which is that if you implement this in a programming language,
+[07:09:74] then in practice, most foreign languages will have
+[07:12:46] some different functions rather than an asterisk to denote convolution.
+[07:16:72] For example, in the previous exercise,
+[07:18:98] you use or you implement a function called conv-forward.
+[07:23:74] If you do this in tens of flow,
+[07:27:18] there is a function tf.nn.cont2d.
+[07:29:51] And then other deep learning programming frameworks in the CARIS program firmware,
+[07:37:53] we shall see later in this course,
+[07:39:86] there is a function called cont2d that implements convolution and so on.
+[07:44:75] But all the deep learning frameworks that have a good support
+[07:49:37] for computer vision will have some functions for implementing this convolution operator.
+[07:56:63] Why is this doing vertical edge detection?
+[07:59:62] Lets look at another example.
+[08:01:84] To illustrate this, we are going to use a simplified image.
+[08:06:16] Here is a simple 6 by
+[08:09:41] 6 image where the left half of the image is 10 and the right half is zero.
+[08:13:97] If you plot this as a picture,
+[08:15:59] it might look like this,
+[08:16:94] where the left half, the 10s,
+[08:18:46] give you brighter pixel
+[08:20:69] intensive values and the right half gives you darker pixel intensive values.
+[08:24:22] I am using that shade of gray to denote zeros,
+[08:28:10] although maybe it could also be drawn as black.
+[08:31:62] But in this image,
+[08:32:93] there is clearly a very strong vertical edge right down the middle of
+[08:37:37] this image as it transitions from white to black or white to darker color.
+[08:43:66] When you convolve this with the 3 by
+[08:46:56] 3 filter and so this 3 by 3 filter can be visualized as follows,
+[08:52:96] where is lighter, brighter pixels on
+[08:56:96] the left and then this mid tone zeroes in the middle and then darker on the right.
+[09:01:38] What you get is this matrix on the right.
+[09:06:51] Just to verify this math if you want,
+[09:09:88] this zero for example,
+[09:12:14] is obtained by taking
+[09:14:65] the element wise products and then multiplying with this 3 by 3 block and
+[09:18:07] so you get from
+[09:20:31] the left column 10 plus 10 plus 10 and then zeroes in the middle and then -10,
+[09:25:88] -10, -10 which is why you end up with zero over here.
+[09:30:49] Whereas in contrast, if that 30 will be obtained from this,
+[09:36:04] which you get from having 10 plus 10 plus 10 and then minus zero,
+[09:42:57] minus zero which is why you end up with a 30 over there.
+[09:47:16] Now, if you plot this right most matrix's image it will look
+[09:50:79] like that where there is this lighter region right in
+[09:54:54] the middle and that corresponds to this having
+[09:57:33] detected this vertical edge down the middle of your 6 by 6 image.
+[10:02:39] In case the dimensions here seem a
+[10:05:61] little bit wrong that the detected edge seems really thick,
+[10:08:96] that's only because we are working with very small images in this example.
+[10:13:63] And if you are using, say a 1000 by 1000 image rather than a 6 by 6 image then
+[10:17:96] you find that this does a pretty good job,
+[10:23:48] really detecting the vertical edges in your image.
+[10:27:15] In this example, this bright region in the middle is
+[10:30:86] just the output images way of saying that it looks like there is
+[10:34:38] a strong vertical edge right down the middle of the image.
+[10:39:16] Maybe one intuition to take away from vertical edge detection is that a vertical edge is
+[10:45:15] a three by three region since we are using a 3 by 3 filter
+[10:48:20] where there are bright pixels on the left,
+[10:52:65] you do not care that much what is in the middle and dark pixels on the right.
+[10:57:78] The middle in this 6 by 6 image is really where there could be
+[11:03:92] bright pixels on the left and darker pixels on the right and
+[11:07:68] that is why it thinks its a vertical edge over there.
+[11:11:61] The convolution operation gives you a convenient way to
+[11:15:42] specify how to find these vertical edges in an image.
+[11:20:09] You have now seen how the convolution operator works.
+[11:23:53] In the next video, you will see how to take this and use it
+[11:26:82] as one of the basic building blocks of a Convolution Neural Network.

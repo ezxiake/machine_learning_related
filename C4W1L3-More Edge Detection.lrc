@@ -1,0 +1,117 @@
+[ti:]
+[ar:]
+[al:]
+[by:¾Å¾ÅLrc¸è´ÊÍø¡«www.99Lrc.net]
+[00:02:02] You've seen how the convolution operation allows you to implement a vertical
+[00:06:77] edge detector.
+[00:07:80] In this video, you'll learn the difference between positive and negative edges, that
+[00:12:28] is, the difference between light to dark versus dark to light edge transitions.
+[00:16:43] And you'll also see other types of edge detectors,
+[00:19:38] as well as how to have an algorithm learn,
+[00:21:73] rather than have us hand code an edge detector as we've been doing so far.
+[00:26:50] So let's get started.
+[00:31:61] Here's the example you saw from the previous video, where you have this image,
+[00:36:05] six by six, there's light on the left and dark on the right,
+[00:39:37] and convolving it with the vertical edge detection filter results in detecting
+[00:43:75] the vertical edge down the middle of the image.
+[00:47:71] What happens in an image where the colors are flipped,
+[00:51:40] where it is darker on the left and brighter on the right?
+[00:55:10] So the 10s are now on the right half of the image and the 0s on the left.
+[00:59:93] If you convolve it with the same edge detection filter,
+[01:03:24] you end up with negative 30s, instead of 30 down the middle, and
+[01:07:83] you can plot that as a picture that maybe looks like that.
+[01:12:82] So because the shade of the transitions is reversed,
+[01:15:56] the 30s now gets reversed as well.
+[01:18:29] And the negative 30s
+[01:21:16] shows that this is a dark to light rather than a light to dark transition.
+[01:26:79] And if you don't care which of these two cases it is,
+[01:30:68] you could take absolute values of this output matrix.
+[01:34:78] But this particular filter does make a difference between the light to dark
+[01:39:36] versus the dark to light edges.
+[01:42:50] Let's see some more examples of edge detection.
+[01:45:19] This three by three filter we've seen allows you to detect vertical edges.
+[01:49:64] So maybe it should not surprise you too much that this
+[01:53:47] three by three filter will allow you to detect horizontal edges.
+[01:58:16] So as a reminder, a vertical edge according to this filter, is a three by
+[02:02:45] three region where the pixels are relatively bright on the left part and
+[02:06:13] relatively dark on the right part.
+[02:08:58] So similarly, a horizontal edge would be a three by three region where the pixels
+[02:13:08] are relatively bright on top and relatively dark in the bottom row.
+[02:18:51] So here's one example, this is a more complex one,
+[02:22:39] where you have here 10s in the upper left and lower right-hand corners.
+[02:27:96] So if you draw this as an image, this would be an image which is going to be
+[02:32:55] darker where there are 0s, so I'm going to shade in the darker regions, and
+[02:37:37] then lighter in the upper left and lower right-hand corners.
+[02:41:45] And if you convolve this with a horizontal edge detector, you end up with this.
+[02:48:47] And so just to take a couple of examples,
+[02:51:46] this 30 here corresponds to this three by three region,
+[02:55:77] where indeed there are bright pixels on top and darker pixels on the bottom.
+[03:01:40] It's kind of over here.
+[03:04:11] And so it finds a strong positive edge there.
+[03:08:39] And this -30 here corresponds to this region,
+[03:12:30] which is actually brighter on the bottom and darker on top.
+[03:16:98] So that is a negative edge in this example.
+[03:21:21] And again, this is kind of an artifact of the fact that we're working
+[03:26:12] with relatively small images, that this is just a six by six image.
+[03:31:30] But these intermediate values, like this -10, for
+[03:34:21] example, just reflects the fact that that filter here, it captures part
+[03:39:15] of the positive edge on the left and part of the negative edge on the right, and
+[03:44:02] so blending those together gives you some intermediate value.
+[03:47:12] But if this was a very large,
+[03:49:05] say a thousand by a thousand image with this type of checkerboard pattern,
+[03:54:16] then you won't see these transitions regions of the 10s.
+[03:58:17] The intermediate values would be quite small relative to the size of the image.
+[04:02:95] So in summary, different filters allow you to find vertical and horizontal edges.
+[04:10:22] It turns out that the three by three vertical edge detection filter
+[04:15:32] we've used is just one possible choice.
+[04:17:87] And historically, in the computer vision literature,
+[04:20:47] there was a fair amount of debate about what is the best set of numbers to use.
+[04:24:75] So here's something else you could use, which is maybe 1, 2,
+[04:29:51] 1, 0, 0, 0, -1, -2, -1.
+[04:32:84] This is called a Sobel filter.
+[04:35:67] And the advantage of this is it puts a little bit more weight to the central row,
+[04:40:98] the central pixel, and this makes it maybe a little bit more robust.
+[04:46:62] But computer vision researchers will use other sets of numbers as well,
+[04:50:71] like maybe instead of a 1, 2, 1, it should be a 3, 10, 3, right?
+[04:54:95] And then -3, -10, -3.
+[04:59:33] And this is called a Scharr filter.
+[05:01:93] And this has yet other slightly different properties.
+[05:06:75] And this is just for vertical edge detection.
+[05:10:23] And if you flip it 90 degrees, you get horizontal edge detection.
+[05:13:04] And with the rise of deep learning, one of the things we learned is that when
+[05:18:35] you really want to detect edges in some complicated image, maybe you don't
+[05:23:74] need to have computer vision researchers handpick these nine numbers.
+[05:29:31] Maybe you can just learn them and treat the nine numbers of this matrix
+[05:33:85] as parameters, which you can then learn using back propagation.
+[05:37:74] And the goal is to learn nine parameters so that when you take the image,
+[05:42:09] the six by six image, and convolve it with your three by three filter,
+[05:46:37] that this gives you a good edge detector.
+[05:50:03] And what you see in later videos is that by just treating these nine numbers as
+[05:54:84] parameters, the backprop can choose to learn 1, 1, 1, 0, 0, 0,
+[05:59:57] -1,-1, if it wants, or learn the Sobel filter or learn the Scharr filter,
+[06:04:68] or more likely learn something else that's even better at
+[06:08:36] capturing the statistics of your data than any of these hand coded filters.
+[06:13:21] And rather than just vertical and horizontal edges,
+[06:17:00] maybe it can learn to detect edges that are at 45 degrees or
+[06:21:21] 70 degrees or 73 degrees or at whatever orientation it chooses.
+[06:26:12] And so by just letting all of these numbers be parameters and learning them
+[06:30:59] automatically from data, we find that neural networks can actually learn low
+[06:35:35] level features, can learn features such as edges, even more robustly than
+[06:39:97] computer vision researchers are generally able to code up these things by hand.
+[06:45:46] But underlying all these computations is still this convolution operation,
+[06:51:40] Which allows back propagation to learn whatever three by three filter it wants
+[06:56:77] and then to apply it throughout the entire image, at this position, at this position,
+[07:02:78] at this position, in order to output whatever feature it's trying to detect.
+[07:08:26] Be it vertical edges, horizontal edges, or edges at some other angle or
+[07:13:29] even some other filter that we might not even have a name for in English.
+[07:19:37] So the idea you can treat these nine numbers as parameters to be
+[07:22:94] learned has been one of the most powerful ideas in computer vision.
+[07:26:89] And later in this course, later this week, we'll actually talk about the details of
+[07:31:65] how you actually go about using back propagation to learn these nine numbers.
+[07:36:03] But first, let's talk about some other details, some other variations,
+[07:39:63] on the basic convolution operation.
+[07:41:89] In the next two videos, I want to discuss with you how to use padding as well as
+[07:46:21] different strides for convolutions.
+[07:48:51] And these two will become important pieces of this convolutional building block of
+[07:52:94] convolutional neural networks.
+[07:55:13] So let's go on to the next video.

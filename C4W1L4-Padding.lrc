@@ -1,0 +1,152 @@
+[ti:]
+[ar:]
+[al:]
+[by:¾Å¾ÅLrc¸è´ÊÍø¡«www.99Lrc.net]
+[00:01:41] In order to build deep neural networks one modification to
+[00:05:83] the basic convolutional operation that you need to really use is padding.
+[00:10:67] Let's see how it works.
+[00:12:23] What we saw in earlier videos is that if you take
+[00:15:19] a six by six image and convolve it with a three by three filter,
+[00:19:38] you end up with a four by four output with a four by four matrix,
+[00:23:58] and that's because the number of possible positions with the three by three filter,
+[00:28:08] there are only, sort of,
+[00:29:47] four by four possible positions,
+[00:31:78] for the three by three filter to fit in your six by six matrix.
+[00:37:03] And the math of this this turns out to be that if you have
+[00:41:34] a end by end image and to involved that with an f by f filter,
+[00:45:72] then the dimension of the output will be;
+[00:48:85] n minus f plus one by n minus f plus one.
+[00:58:23] And in this example,
+[00:59:66] six minus three plus one is equal to four,
+[01:03:45] which is why you wound up with a four by four output.
+[01:07:48] So the two downsides to this; one is that,
+[01:10:40] if every time you apply a convolutional operator, your image shrinks,
+[01:14:79] so you come from six by six down to four by four then,
+[01:17:59] you can only do this a few times before your image starts getting really small,
+[01:21:71] maybe it shrinks down to one by one or something,
+[01:23:87] so maybe, you don't want your image to shrink
+[01:26:72] every time you detect edges or to set other features on it,
+[01:29:90] so that's one downside,
+[01:31:60] and the second downside is that,
+[01:33:59] if you look the pixel at the corner or the edge,
+[01:36:66] this little pixel is touched as used only in one of the outputs,
+[01:40:75] because this touches that three by three region.
+[01:43:49] Whereas, if you take a pixel in the middle, say this pixel,
+[01:48:90] then there are a lot of three by three regions that overlap that pixel and so,
+[01:55:38] is as if pixels on the corners or on the edges are use much less in the output.
+[02:01:45] So you're throwing away a lot of the information near the edge of the image.
+[02:06:39] So, to solve both of these problems,
+[02:08:73] both the shrinking output,
+[02:12:82] and when you build really deep neural networks,
+[02:15:48] you see why you don't want the image to shrink on every step because if you have,
+[02:19:68] maybe a hundred layer of deep net,
+[02:22:03] then it'll shrinks a bit on every layer,
+[02:23:71] then after a hundred layers you end up with a very small image.
+[02:27:99] So that was one problem,
+[02:29:08] the other is throwing away a lot of the information from the edges of the image.
+[02:38:12] So in order to fix both of these problems,
+[02:40:74] what you can do is the full apply of convolutional operation.
+[02:44:77] You can pad the image.
+[02:46:95] So in this case, let's say you pad the image with an additional one border,
+[02:56:18] with the additional border of one pixel all around the edges.
+[03:00:67] So, if you do that,
+[03:02:63] then instead of a six by six image,
+[03:05:51] you've now padded this to eight by eight image and if you
+[03:09:50] convolve an eight by eight image with a three by three image you now get that out.
+[03:14:00] Now, the four by four by the six by six image,
+[03:16:96] so you managed to preserve the original input size of six by six.
+[03:23:66] So by convention when you pad,
+[03:25:35] you padded with zeros and if p is the padding amounts.
+[03:33:29] So in this case,
+[03:34:57] p is equal to one,
+[03:36:61] because we're padding all around with an extra boarder of one pixels,
+[03:41:18] then the output becomes
+[03:47:94] n plus 2p minus f plus one by n plus 2p minus f by one.
+[03:54:36] So, this becomes six plus two times one minus three plus one by the same thing on that.
+[04:02:48] So, six plus two minus three plus one that's equals to six.
+[04:06:47] So you end up with a six by six image that preserves the size of the original image.
+[04:12:88] So this being pixel actually influences all of
+[04:16:03] these cells of the output and so this effective,
+[04:23:33] maybe not by throwing away but counting less
+[04:26:70] the information from the edge of the corner or the edge of the image is reduced.
+[04:32:71] And I've shown here,
+[04:34:25] the effect of padding deep border with just one pixel.
+[04:38:24] If you want, you can also pad the border with two pixels, in which case I guess,
+[04:42:53] you do add on another border
+[04:44:82] here and they can pad it with even more pixels if you choose.
+[04:50:12] So, I guess what I'm drawing here,
+[04:52:81] this would be a padded equals to p plus two.
+[04:55:43] In terms of how much to pad,
+[05:00:66] it turns out there two common choices that are called,
+[05:04:12] Valid convolutions and Same convolutions.
+[05:07:38] Not really is a great names but in a valid convolution,
+[05:10:96] this basically means no padding.
+[05:15:17] And so in this case you might have n by n image convolve with an f by
+[05:22:60] f filter and this would give you an n minus
+[05:25:34] f plus one by n minus f plus one dimensional output.
+[05:30:29] So this is like the example we had previously on the previous videos where we had
+[05:35:06] an n by n image convolve with
+[05:37:25] the three by three filter and that gave you a four by four output.
+[05:43:09] The other most common choice of padding is called
+[05:48:54] the same convolution and that means when you pad,
+[05:52:66] so the output size is the same as the input size.
+[05:58:58] So if we actually look at this formula,
+[06:01:79] when you pad by p pixels then,
+[06:04:63] its as if n goes to n plus 2p and then you have from the rest of this, right?
+[06:11:67] Minus f plus one.
+[06:15:74] So we have an n by n image and the padding of a border of p pixels all around,
+[06:22:12] then the output sizes of this dimension is xn plus 2p minus f plus one.
+[06:28:90] And so, if you want n plus 2p minus f plus one to be equal to one,
+[06:36:08] so the output size is same as input size,
+[06:38:79] if you take this and solve for, I guess,
+[06:42:90] n cancels out on both sides and if you solve for p,
+[06:46:66] this implies that p is equal to f minus one over two.
+[06:53:46] So when f is odd,
+[06:56:18] by choosing the padding size to be as follows,
+[06:58:99] you can make sure that the output size is same as
+[07:01:96] the input size and that's why, for example,
+[07:06:26] when the filter was three by three as this had happened in the previous slide,
+[07:10:79] the padding that would make the output size the same as the input size was three minus
+[07:15:99] one over two, which is one.
+[07:21:79] And as another example,
+[07:23:41] if your filter was five by five,
+[07:28:25] so if f is equal to five, then,
+[07:30:39] if you pad it into that equation you find that the padding of two is required to keep
+[07:35:59] the output size the same as the input size when the filter is five by five.
+[07:43:15] And by convention in computer vision,
+[07:46:44] f is usually odd.
+[07:50:43] It's actually almost always odd and you rarely see even numbered filters,
+[07:59:07] filter works using computer vision.
+[08:02:63] And I think that two reasons for that;
+[08:05:28] one is that if f was even,
+[08:07:32] then you need some asymmetric padding.
+[08:10:15] So only if f is odd that this type of same convolution gives a natural padding region,
+[08:15:38] had the same dimension all around rather than
+[08:17:18] pad more on the left and pad less on the right,
+[08:20:29] or something that asymmetric.
+[08:22:10] And then second, when you have an odd dimension filter,
+[08:27:44] such as three by three or five by five,
+[08:29:77] then it has a central position and sometimes in
+[08:32:86] computer vision its nice to have a distinguisher,
+[08:36:09] it's nice to have a pixel,
+[08:37:45] you can call the central pixel so you can talk about the position of the filter.
+[08:43:52] Right, maybe none of this is a great reason for using f to be pretty much always
+[08:48:08] odd but if you look a convolutional literature you
+[08:50:31] see three by three filters are very common.
+[08:53:48] You see some five by five, seven by sevens.
+[08:56:15] And actually sometimes, later we'll also
+[08:58:98] talk about one by one filters and that why that makes sense.
+[09:02:09] But just by convention,
+[09:04:13] I recommend you just use odd number filters as well.
+[09:08:33] I think that you can probably get
+[09:10:38] just fine performance even if you want to use an even number value for f,
+[09:14:18] but if you stick to the common computer vision convention,
+[09:18:53] I usually just use odd number f. So you've now seen how to use padded convolutions.
+[09:25:86] To specify the padding for your convolution operation,
+[09:28:89] you can either specify the value for
+[09:31:20] p or you can just say that this is a valid convolution,
+[09:34:83] which means p equals zero or you can say this is a same convolution,
+[09:38:59] which means pad as much as you need to make sure
+[09:40:85] the output has same dimension as the input.
+[09:43:78] So that's it for padding.
+[09:45:18] In the next video, let's talk about how you can implement Strided convolutions.

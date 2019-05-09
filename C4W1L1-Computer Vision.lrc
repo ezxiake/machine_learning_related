@@ -1,0 +1,109 @@
+[ti:]
+[ar:]
+[al:]
+[by:¾Å¾ÅLrc¸è´ÊÍø¡«www.99Lrc.net]
+[00:00:00] Welcome to this course on Convolutional Networks.
+[00:03:15] Computer vision is one of the areas that's been
+[00:05:43] advancing rapidly thanks to deep learning.
+[00:08:05] Deep learning computer vision is now helping self-driving cars
+[00:11:49] figure out where the other cars and pedestrians around so as to avoid them.
+[00:15:32] Is making face recognition work much better than ever before,
+[00:18:82] so that perhaps some of you will soon, or perhaps already,
+[00:21:66] be able to unlock a phone,
+[00:23:36] unlock even a door using just your face.
+[00:25:92] And if you look on your cell phone,
+[00:27:43] I bet you have many apps that show you pictures of food,
+[00:29:68] or pictures of a hotel, or just fun pictures of scenery.
+[00:32:79] And some of the companies that build those apps are
+[00:34:98] using deep learning to help show you the most attractive,
+[00:37:89] the most beautiful, or the most relevant pictures.
+[00:40:47] And I think deep learning is even enabling new types of art to be created.
+[00:45:41] So, I think the two reasons I'm excited about
+[00:48:42] deep learning for computer vision and why I think you might be too.
+[00:51:69] First, rapid advances in computer vision are enabling brand new applications to view,
+[00:57:44] though they just were impossible a few years ago.
+[00:59:99] And by learning these tools,
+[01:01:23] perhaps you will be able to invent some of these new products and applications.
+[01:06:03] Second, even if you don't end up building computer vision systems per se,
+[01:09:77] I found that because the computer vision research community has been so
+[01:13:74] creative and so inventive in coming up
+[01:15:93] with new neural network architectures and algorithms,
+[01:18:37] is actually inspire that creates a lot cross-fertilization into other areas as well.
+[01:23:01] For example, when I was working on speech recognition,
+[01:25:29] I sometimes actually took inspiration from ideas
+[01:27:84] from computer vision and borrowed them into the speech literature.
+[01:31:27] So, even if you don't end up working on computer vision,
+[01:33:57] I hope that you find some of the ideas you learn about in this course hopeful
+[01:37:16] for some of your algorithms and your architectures.
+[01:41:24] So with that, let's get started.
+[01:43:29] Here are some examples of computer vision problems we'll study in this course.
+[01:48:57] You've already seen image classifications,
+[01:50:87] sometimes also called image recognition,
+[01:52:65] where you might take as input say a 64 by 64 image and try to figure out,
+[01:56:84] is that a cat?
+[01:58:61] Another example of the computer vision problem is object detection.
+[02:02:87] So, if you're building a self-driving car,
+[02:04:69] maybe you don't just need to figure out that there are other cars in this image.
+[02:08:18] But instead, you need to figure out the position of the other cars in this picture,
+[02:12:64] so that your car can avoid them.
+[02:14:81] In object detection, usually,
+[02:16:68] we have to not just figure out that these other objects say cars and picture,
+[02:20:83] but also draw boxes around them.
+[02:23:76] We have some other way of recognizing where in the picture are these objects.
+[02:29:10] And notice also, in this example,
+[02:30:99] that they can be multiple cars in the same picture,
+[02:34:65] or at least every one of them within a certain distance of your car.
+[02:38:51] Here's another example, maybe a more fun one is neural style transfer.
+[02:42:56] Let's say you have a picture,
+[02:44:08] and you want this picture repainted in a different style.
+[02:49:30] So neural style transfer,
+[02:50:74] you have a content image,
+[02:52:29] and you have a style image.
+[02:54:24] The image on the right is actually a Picasso.
+[02:56:37] And you can have a neural network put them together to
+[02:59:20] repaint the content image (that is the image on the left),
+[03:02:62] but in the style of the image on the right,
+[03:05:60] and you end up with the image at the bottom.
+[03:08:73] So, algorithms like these are enabling new types of artwork to be created.
+[03:12:39] And in this course, you'll learn how to do this yourself as well.
+[03:15:98] One of the challenges of computer vision problems is that the inputs can get really big.
+[03:21:18] For example, in previous courses,
+[03:23:04] you've worked with 64 by 64 images.
+[03:25:18] And so that's 64 by 64 by 3 because there are three color channels.
+[03:29:03] And if you multiply that out, that's 12288.
+[03:32:49] So x the input features has dimension 12288.
+[03:37:11] And that's not too bad.
+[03:38:64] But 64 by 64 is actually a very small image.
+[03:42:10] If you work with larger images,
+[03:44:08] maybe this is a 1000 pixel by 1000 pixel image,
+[03:48:61] and that's actually just one megapixel.
+[03:51:09] But the dimension of the input features will be 1000 by 1000 by 3,
+[03:57:53] because you have three RGB channels,
+[03:59:64] and that's three million.
+[04:02:38] If you are viewing this on a smaller screen,
+[04:04:59] this might not be apparent,
+[04:05:79] but this is actually a low res 64 by 64 image,
+[04:08:44] and this is a higher res 1000 by 1000 image.
+[04:11:47] But if you have three million input features,
+[04:14:19] then this means that X here will be three million dimensional.
+[04:21:15] And so, if in the first hidden layer maybe you have just a 1000 hidden units,
+[04:27:52] then the total number of weights that is the matrix W1,
+[04:36:24] if you use a standard or fully connected network like we have in courses one or two.
+[04:42:62] This matrix will be a 1000 by 3 million dimensional matrix.
+[04:50:36] Because X is now R by three million.
+[04:55:13] 3m. I'm using to denote three million.
+[04:57:79] And this means that this matrix here will have
+[05:00:48] three billion parameters which is just very, very large.
+[05:05:14] And with that many parameters,
+[05:06:82] it's difficult to get enough data to prevent a neural network from overfitting.
+[05:12:04] And also, the computational requirements and the memory requirements to train
+[05:16:10] a neural network with three billion parameters is just a bit infeasible.
+[05:20:87] But for computer vision applications,
+[05:22:73] you don't want to be stuck using only tiny little images.
+[05:25:71] You want to use large images.
+[05:27:88] To do that, you need to better implement the convolution operation,
+[05:32:02] which is one of the fundamental building blocks of convolutional neural networks.
+[05:35:95] Let's see what this means,
+[05:37:13] and how you can implement this, in the next video.
+[05:39:50] And we'll illustrate convolutions,
+[05:40:91] using the example of Edge Detection.

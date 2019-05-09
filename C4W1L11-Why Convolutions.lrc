@@ -1,0 +1,157 @@
+[ti:]
+[ar:]
+[al:]
+[by:¾Å¾ÅLrc¸è´ÊÍø¡«www.99Lrc.net]
+[00:00:00] For this final video for this week,
+[00:02:38] let's talk a bit about why convolutions are so
+[00:05:52] useful when you include them in your neural networks.
+[00:08:99] And then finally, let's briefly talk about how to put this all together and how
+[00:13:89] you could train a convolution neural network when you have a label training set.
+[00:20:16] I think there are two main advantages of
+[00:23:61] convolutional layers over just using fully connected layers.
+[00:29:09] And the advantages are parameter sharing and sparsity of connections.
+[00:34:07] Let me illustrate with an example.
+[00:36:09] Let's say you have a 32 by 32 by 3 dimensional image,
+[00:42:91] and this actually comes from the example from the previous video,
+[00:49:04] but let's say you use five by five filter with six filters.
+[00:54:94] And so, this gives you a 28 by 28 by 6 dimensional output.
+[01:04:88] So, 32 by 32 by 3 is 3,072,
+[01:07:93] and 28 by 28 by 6 if you multiply all those numbers is 4,704.
+[01:17:32] And so, if you were to create a neural network with 3,072 units in one layer,
+[01:24:04] and with 4,704 units in the next layer,
+[01:27:99] and if you were to connect every one of these neurons,
+[01:31:20] then the weight matrix,
+[01:32:65] the number of parameters in a weight matrix would be 3,072
+[01:35:62] times 4,704 which is about 14 million.
+[01:42:17] So, that's just a lot of parameters to train.
+[01:44:95] And today you can train neural networks with even more parameters than 14 million,
+[01:49:45] but considering that this is just a pretty small image,
+[01:52:54] this is a lot of parameters to train.
+[01:54:98] And of course, if this were to be 1,000 by 1,000 image,
+[02:00:03] then your display matrix will just become invisibly large.
+[02:04:92] But if you look at the number of parameters in this convolutional layer,
+[02:10:02] each filter is five by five.
+[02:12:71] So, each filter has 25 parameters,
+[02:15:38] plus a bias parameter miss of 26 parameters per a filter,
+[02:19:12] and you have six filters, so,
+[02:21:28] the total number of parameters is that,
+[02:23:80] which is equal to 156 parameters.
+[02:26:60] And so, the number of parameters in this conv layer remains quite small.
+[02:31:36] And the reason that a consonant has run to these small parameters is really two reasons.
+[02:37:96] One is parameter sharing.
+[02:40:11] And parameter sharing is motivated by the observation
+[02:43:91] that feature detector such as vertical edge detector,
+[02:47:57] that's useful in one part of the image is probably useful in another part of the image.
+[02:51:09] And what that means is that,
+[02:52:43] if you've figured out say a three by three filter for detecting vertical edges,
+[02:56:63] you can then apply the same three by three filter over here,
+[03:01:76] and then the next position over,
+[03:03:75] and the next position over, and so on.
+[03:06:22] And so, each of these feature detectors,
+[03:09:04] each of these aqua's can use the same parameters in lots of
+[03:13:51] different positions in your input image in order to
+[03:17:14] detect say a vertical edge or some other feature.
+[03:21:82] And I think this is true for low-level features like edges,
+[03:25:88] as well as the higher level features, like maybe,
+[03:28:99] detecting the eye that indicates a face or a cat or something there.
+[03:32:86] But being with a share in this case
+[03:34:64] the same nine parameters to compute all 16 of these aquas,
+[03:39:45] is one of the ways the number of parameters is reduced.
+[03:43:62] And it also just seems intuitive that a feature detector
+[03:47:59] like a vertical edge detector computes it for the upper left-hand corner of the image.
+[03:52:07] The same feature seems like it will probably be useful,
+[03:55:47] has a good chance of being useful for the lower right-hand corner of the image.
+[03:59:28] So, maybe you don't need to learn
+[04:00:91] separate feature detectors for
+[04:02:32] the upper left and the lower right-hand corners of the image.
+[04:05:14] And maybe you do have a dataset where you have
+[04:07:43] the upper left-hand corner and lower right-hand corner have different distributions, so,
+[04:12:08] they maybe look a little bit different but they might be similar enough,
+[04:15:66] they're sharing feature detectors all across the image, works just fine.
+[04:20:18] The second way that consonants get away with
+[04:23:80] having relatively few parameters is by having sparse connections.
+[04:27:48] So, here's what I mean,
+[04:28:77] if you look at the zero,
+[04:30:40] this is computed via three by three convolution.
+[04:32:98] And so, it depends only on this three by three inputs grid or cells.
+[04:38:35] So, it is as if this output units on the right is connected only
+[04:43:90] to nine out of these six by six, 36 input features.
+[04:50:15] And in particular, the rest of these pixel values,
+[04:54:01] all of these pixel values do not have any effects on the other output.
+[05:02:39] So, that's what I mean by sparsity of connections.
+[05:04:94] As another example, this output depends only on these nine input features.
+[05:15:58] And so, it's as if only those nine input features are connected to this output,
+[05:20:29] and the other pixels just don't affect this output at all.
+[05:23:43] And so, through these two mechanisms,
+[05:25:82] a neural network has a lot fewer parameters which allows it
+[05:30:31] to be trained with smaller training cells and is less prone to be over 30.
+[05:35:38] And so, sometimes you also hear about
+[05:37:44] convolutional neural networks being very good at capturing translation invariance.
+[05:42:24] And that's the observation that
+[05:44:72] a picture of a cat shifted a couple of pixels to the right,
+[05:48:17] is still pretty clearly a cat.
+[05:50:73] And convolutional structure helps the neural network encode the fact that an image
+[05:58:71] shifted a few pixels should result in pretty similar features and
+[06:02:60] should probably be assigned the same oval label.
+[06:07:51] And the fact that you are applying to same filter,
+[06:10:46] knows all the positions of the image,
+[06:13:13] both in the early layers and in the late layers that
+[06:16:25] helps a neural network automatically learn to be more
+[06:20:06] robust or to better capture the desirable property of translation invariance.
+[06:28:32] So, these are maybe a couple of the reasons why
+[06:32:41] convolutions or convolutional neural network work so well in computer vision.
+[06:37:32] Finally, let's put it all together and see how you can train one of these networks.
+[06:43:15] Let's say you want to build a cat detector and you
+[06:45:98] have a labeled training sets as follows,
+[06:48:71] where now, X is an image.
+[06:52:18] And the y's can be binary labels,
+[06:54:65] or one of K causes.
+[06:57:64] And let's say you've chosen a convolutional neural network structure,
+[07:02:09] may be inserted the image and then having neural convolutional and pulling layers
+[07:06:46] and then some fully connected layers
+[07:09:31] followed by a software output that then operates Y hat.
+[07:13:88] The conv layers and the fully connected layers will have various parameters,
+[07:20:16] W, as well as bias's B.
+[07:23:21] And so, any setting of the parameters, therefore,
+[07:26:78] lets you define a cost function similar to what we have seen in the previous courses,
+[07:32:54] where we've randomly initialized parameters W and B.
+[07:37:64] You can compute the cause J,
+[07:40:23] as the sum of losses of the neural networks predictions on your entire training set,
+[07:46:64] maybe divide it by M. So,
+[07:50:88] to train this neural network,
+[07:52:55] all you need to do is then use gradient descents or some of
+[07:56:21] the algorithm like, gradient descent momentum,
+[07:59:79] or RMSProp or Adam, or something else,
+[08:03:44] in order to optimize all the parameters of
+[08:05:90] the neural network to try to reduce the cost function J.
+[08:09:22] And you find that if you do this,
+[08:11:11] you can build a very effective cat detector or some other detector.
+[08:18:75] So, congratulations on finishing this week's videos.
+[08:21:70] You've now seen all the basic building blocks of a convolutional neural network,
+[08:25:55] and how to put them together into an effective image recognition system.
+[08:30:41] In this week's program exercises,
+[08:32:09] I think all of these things will come more concrete,
+[08:34:31] and you'll get the chance to practice implementing
+[08:36:61] these things yourself and seeing it work for yourself.
+[08:39:80] Next week, we'll continue to go deeper into convolutional neural networks.
+[08:43:83] I mentioned earlier, that there're just a lot of
+[08:45:73] the hyperparameters in convolution neural networks.
+[08:48:11] So, what I want to do next week,
+[08:49:42] is show you a few concrete examples of some of
+[08:52:00] the most effective convolutional neural networks,
+[08:54:68] so you can start to recognize the patterns
+[08:57:01] of what types of network architectures are effective.
+[09:00:05] And one thing that people often do is just take the architecture that
+[09:04:36] someone else has found and published in
+[09:05:88] a research paper and just use that for your application.
+[09:08:99] And so, by seeing some more concrete examples next week,
+[09:12:05] you also learn how to do that better.
+[09:15:47] And beyond that, next week,
+[09:16:69] we'll also just get that intuitions about what makes confinet work well,
+[09:21:52] and then in the rest of the course,
+[09:23:16] we'll also see a variety of other computer vision applications such as,
+[09:27:47] object detection, and neural store transfer.
+[09:30:17] How they create new forms of artwork using these set of algorithms.
+[09:34:07] So, that's over this week,
+[09:35:56] best of luck with the home works,
+[09:37:53] and I look forward to seeing you next week.
